@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus AI Demo</title>
+</head>
+<body>
+  <h1>Nexus AI Chat Demo</h1>
+  <div id="chatLog"></div>
+  <input type="text" id="userInput" placeholder="Type your message…">
+  <button id="sendBtn">Send</button>
+
+  <script src="NexusAI_AI.js"></script>
+  <script src="nexusai-config.js"></script>
+  <script>
+    const chatLog = document.getElementById('chatLog');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    // Initialize Nexus AI
+    const ai = new NexusAI({
+      apiKey: NEXUS_API_KEY,
+      model: 'Nexus_V1'
+    });
+
+    async function sendMessage() {
+      const msg = userInput.value;
+      if (!msg) return;
+      chatLog.innerHTML += `<div><strong>You:</strong> ${msg}</div>`;
+      userInput.value = '';
+
+      const response = await ai.chat(msg);
+      chatLog.innerHTML += `<div><strong>Nexus:</strong> ${response}</div>`;
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', e => {
+      if (e.key === 'Enter') sendMessage();
+    });
+  </script>
+</body>
+</html>
